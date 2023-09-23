@@ -42,7 +42,7 @@ spec:
           env:
             - name: MONGODB_URI
               value: "mongodb://mongodb-service:27017/K8Sproject"
-
+              
 ---
 apiVersion: apps/v1
 kind: Deployment
