@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: imanehai/backend
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MONGO_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: back-config
+                  key: MONGO_URL
+            - name: MONGO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-credentials
+                  key: password
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-credentials
+                  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: back-config
+data:
+  MONGO_URL: "mongo-replica:27017/K8Sproject"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: mongo-creds
+data:
+  MONGO_INITDB_ROOT_PASSWORD: bW9uZ28xMjM0Cg==
+  MONGO_INITDB_ROOT_USERNAME: YWRtaW4K

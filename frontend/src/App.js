@@ -1,4 +1,4 @@
-
+import './App.css';
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import User from './User' 
@@ -9,9 +9,12 @@ function App() {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<User />} />
+          <Route path='/user' element={<User />} />
         </Routes>
       </BrowserRouter>
+      
+    
+      
     </div>
   )
 }

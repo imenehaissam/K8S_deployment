@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import './UserProfile.css';
+import {env} from './env';
 
 function UserProfile() {
   const [userList, setUserList] = useState([]);
   const [newUser, setNewUser] = useState({ firstName: "", lastName: "" });
+ 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/users");
+        const response = await axios.get(`${env.REACT_APP_Backend_URL}/users`);
         setUserList(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -17,11 +19,11 @@ function UserProfile() {
     };
 
     fetchData();
-  }, []);
+  }, );
 
   const handleDeleteUser = async (userId) => {
     try {
-      await axios.delete(`http://localhost:3000/users/${userId}`);
+      await axios.delete(`${env.REACT_APP_Backend_URL}/users/${userId}`);
       const updatedUserList = userList.filter(user => user._id !== userId);
       setUserList(updatedUserList);
     } catch (error) {
@@ -31,7 +33,7 @@ function UserProfile() {
 
   const handleAddUser = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/createuser", newUser);
+      const response = await axios.post(`${env.REACT_APP_Backend_URL}/createuser`, newUser);
       setUserList([...userList, response.data]);
       setNewUser({ firstName: "", lastName: "" });
     } catch (error) {

@@ -5,12 +5,20 @@ const UserModel = require('./models/users');
 
 const app = express();
 
+const corsOptions = {
+  origin: '*', 
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+
 app.use(cors());
 app.use(express.json());
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+
+const dbURL = `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_URL}?authSource=admin`;
+
+
+mongoose.connect(dbURL)
   .then(() => {
     console.log("Connected to MongoDB");
   })
