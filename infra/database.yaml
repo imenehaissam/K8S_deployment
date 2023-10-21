@@ -103,7 +103,7 @@ spec:
                   name: mongodb-credentials
                   key: password
           volumeMounts:
-            - mountPath: /var/lib/mongodb/data
+            - mountPath: /var/lib/mongodb
               name: mongo-volume
       volumes:
         - name: mongo-volume
